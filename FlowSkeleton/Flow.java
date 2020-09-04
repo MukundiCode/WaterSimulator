@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class Flow {
 	static long startTime = 0;
@@ -38,6 +40,11 @@ public class Flow {
 		g.add(fp);
 	    
 		// to do: add a MouseListener, buttons and ActionListeners on those buttons
+      fp.addMouseListener(new CustomMouseListener());//{ 
+   /*   public void mouseClicked(MouseEvent e){
+         System.out.println("Mouse clicked");
+         }
+        }); */
 	   	
 		JPanel b = new JPanel();
 	    b.setLayout(new BoxLayout(b, BoxLayout.LINE_AXIS));
@@ -49,7 +56,15 @@ public class Flow {
 				frame.dispose();
 			}
 		});
-		
+      
+      JButton resetB = new JButton("Reset");
+      JButton pauseB = new JButton("Pause");
+      JButton playB = new JButton("Play");
+		//adding the buttons to the item
+      
+      b.add(resetB);
+      b.add(pauseB);
+      b.add(playB);
 		b.add(endB);
 		g.add(b);
     	
@@ -84,3 +99,16 @@ public class Flow {
 		// to do: initialise and start simulation
 	}
 }
+class CustomMouseListener implements MouseListener {
+      public void mouseClicked(MouseEvent e) {
+         System.out.println("Mouse Clicked: ("+e.getX()+", "+e.getY() +")");
+      }
+      public void mousePressed(MouseEvent e) {
+      }
+      public void mouseReleased(MouseEvent e) {
+      }
+      public void mouseEntered(MouseEvent e) {
+      }
+      public void mouseExited(MouseEvent e) {
+      }
+   }

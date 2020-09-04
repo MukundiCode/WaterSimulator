@@ -1,5 +1,5 @@
 !1514;s
-A
+J
 SAU0JGRASP_MAIN_BOUNDS=%<CONTROL_SHELL_BOUNDS>\012PATH+=%<JGRASP_PATHS>%;\012PATH=+%;%<JGRASP_C_PATHS>\012CYGWIN=nodosfilewarning\012GCC_COLORS=\012-Run\012ADD_EXE_PATH==Y\012
 SCU0JGRASP_MAIN_BOUNDS=%<CONTROL_SHELL_BOUNDS>\012PATH+=%<JGRASP_PATHS>%;\012PATH=+%;%<JGRASP_C_PATHS>\012CYGWIN=nodosfilewarning\012GCC_COLORS=\012-Run\012ADD_EXE_PATH==Y\012
 S+U0JGRASP_MAIN_BOUNDS=%<CONTROL_SHELL_BOUNDS>\012PATH+=%<JGRASP_PATHS>%;\012PATH=+%;%<JGRASP_C_PATHS>\012CYGWIN=nodosfilewarning\012GCC_COLORS=\012-Run\012ADD_EXE_PATH==Y\012
@@ -12,11 +12,13 @@ s#i0
 s#k0
 s#j0
 s#l0
-!95;g
+!118;g
 %\011FlowSkeleton%sFlowPanel.java
 %\011FlowSkeleton%sTerrain.java
 %\011FlowSkeleton%sFlow.java
-!95;f
+%\011terrainWater.java
+!118;f
 %\011FlowSkeleton%sFlowPanel.java
 %\011FlowSkeleton%sTerrain.java
 %\011FlowSkeleton%sFlow.java
+%\011terrainWater.java
