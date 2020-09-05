@@ -25,7 +25,7 @@ public class Flow {
 		return (System.currentTimeMillis() - startTime) / 1000.0f; 
 	}
 	
-	public static void setupGUI(int frameX,int frameY,Terrain landdata) {
+	public static void setupGUI(int frameX,int frameY,Terrain landdata,terrainWater water) {
 		
 		Dimension fsize = new Dimension(800, 800);
     	JFrame frame = new JFrame("Waterflow"); 
@@ -35,12 +35,12 @@ public class Flow {
       	JPanel g = new JPanel();
         g.setLayout(new BoxLayout(g, BoxLayout.PAGE_AXIS)); 
    
-		fp = new FlowPanel(landdata);
+		fp = new FlowPanel(landdata, water);
 		fp.setPreferredSize(new Dimension(frameX,frameY));
 		g.add(fp);
 	    
 		// to do: add a MouseListener, buttons and ActionListeners on those buttons
-      fp.addMouseListener(new CustomMouseListener());//{ 
+      fp.addMouseListener(new CustomMouseListener(fp));//{ 
    /*   public void mouseClicked(MouseEvent e){
          System.out.println("Mouse clicked");
          }
@@ -80,7 +80,8 @@ public class Flow {
 		
 	public static void main(String[] args) {
 		Terrain landdata = new Terrain();
-		
+      terrainWater water = new terrainWater();
+      
 		// check that number of command line arguments is correct
 		if(args.length != 1)
 		{
@@ -91,17 +92,25 @@ public class Flow {
 		// landscape information from file supplied as argument
 		// 
 		landdata.readData(args[0]);
+      water.makeImage(landdata.getDimX(),landdata.getDimY());
 		
 		frameX = landdata.getDimX();
 		frameY = landdata.getDimY();
-		SwingUtilities.invokeLater(()->setupGUI(frameX, frameY, landdata));
+		SwingUtilities.invokeLater(()->setupGUI(frameX, frameY, landdata, water));
 		
 		// to do: initialise and start simulation
 	}
 }
 class CustomMouseListener implements MouseListener {
+      public FlowPanel f;
+      CustomMouseListener(FlowPanel f){
+         this.f = f;
+         }
       public void mouseClicked(MouseEvent e) {
          System.out.println("Mouse Clicked: ("+e.getX()+", "+e.getY() +")");
+         terrainWater.addWater(e.getX(),e.getY());
+         this.f.run();
+         
       }
       public void mousePressed(MouseEvent e) {
       }

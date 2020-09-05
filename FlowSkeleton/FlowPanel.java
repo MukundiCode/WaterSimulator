@@ -5,9 +5,11 @@ import javax.swing.JPanel;
 
 public class FlowPanel extends JPanel implements Runnable {
 	Terrain land;
+   terrainWater water;
 	
-	FlowPanel(Terrain terrain) {
+	FlowPanel(Terrain terrain, terrainWater water) {
 		land=terrain;
+      this.water = water;
 	}
 		
 	// responsible for painting the terrain and water
@@ -18,11 +20,11 @@ public class FlowPanel extends JPanel implements Runnable {
 		int height = getHeight();
 		  
 		super.paintComponent(g);
-		
 		// draw the landscape in greyscale as an image
 		if (land.getImage() != null){
 			g.drawImage(land.getImage(), 0, 0, null);
-		}
+         g.drawImage(water.getImage(),0,0,null);
+		} 
 	}
 	
 	public void run() {	
