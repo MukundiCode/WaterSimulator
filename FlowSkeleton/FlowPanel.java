@@ -26,7 +26,9 @@ public class FlowPanel extends JPanel implements Runnable {
          g.drawImage(water.getImage(),0,0,null);
 		} 
 	}
-	
+	public void addWater(){
+      repaint();
+      }
 	public void run() {	
 		// display loop here
 		// to do: this should be controlled by the GUI
