@@ -1,15 +1,17 @@
 package FlowSkeleton;
-
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class FlowPanel extends JPanel implements Runnable {
 	Terrain land;
    terrainWater water;
+   AtomicBoolean play;
 	
 	FlowPanel(Terrain terrain, terrainWater water) {
 		land=terrain;
       this.water = water;
+      this.play = new AtomicBoolean(false);
 	}
 		
 	// responsible for painting the terrain and water
@@ -29,10 +31,44 @@ public class FlowPanel extends JPanel implements Runnable {
 	public void addWater(){
       repaint();
       }
+   public void stop(){
+      this.play.set(false); 
+      }
+   public void play(){
+      this.play.set(true);
+      }
+   public void clear(){
+      for (int x = 3;x<land.dimx-2;x++){
+         for (int y = 3;y<land.dimy-2;y++){
+            this.water.depth[x][y] = (float)0.00;
+            this.water.img.setRGB(x,y,0);
+            }
+         } 
+    } 
+   
 	public void run() {	
 		// display loop here
 		// to do: this should be controlled by the GUI
 		// to allow stopping and starting
-	    repaint();
+      boolean run = true;
+      //this.play.set(true);
+      System.out.println(this.play.get());
+      while(run == true){
+         if(this.play.get() == true){
+            for (int x = 1;x<land.dimx-1;x++){
+               for (int y = 1;y<land.dimy-1;y++){
+                  this.water.flow(x,y);
+                  }
+               } 
+	          repaint();
+           }
+         else{
+            try {
+               Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                 // Stop immediately and go home
+            }
+         }
+       }
 	}
 }

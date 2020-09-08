@@ -36,6 +36,7 @@ public class terrainWater{
       this.depth = new float[dimx][dimy];
       }
    void makeSurface(Terrain t){
+      this.surfaceLevel = new float[dimx][dimy];
       for (int x=0;x<dimx;x++){
          for (int y=0;y<dimy;y++){
             this.surfaceLevel[x][y] = t.height[x][y] + this.depth[x][y];
@@ -75,20 +76,44 @@ public class terrainWater{
       return minima;
       }
    public void flow(int x, int y){
-      if (isMinima(x,y) != true){
+      if (isMinima(x,y) != true && this.depth[x][y] != 0){
          int r = x;
          int c = y;
-         float[] list = {surfaceLevel[r-1][c-1], surfaceLevel[r-1][c], surfaceLevel[r-1][c+1], surfaceLevel[r][c+1], surfaceLevel[r+1][c+1], surfaceLevel[r+1][c], surfaceLevel[r+1][c-1], surfaceLevel[r][c-1]};
-         int [][] coordinates = {[r-1][c-1],[r-1][c],[r-1][c+1],[r][c+1],[r+1][c+1],[r+1][c],[r+1][c-1],[r][c-1]};
+         int lowest =0;
          //finding the smallest item
-         for (int a = 0;a<8;a++){
+         //creating surfacelevel objects
+         surfaceLevel n1 = new surfaceLevel(r-1,c-1,this.surfaceLevel[r-1][c-1]);
+         surfaceLevel n2 = new surfaceLevel(r-1,c,this.surfaceLevel[r-1][c]);
+         surfaceLevel n3 = new surfaceLevel(r-1,c+1,this.surfaceLevel[r-1][c+1]);
+         surfaceLevel n4 = new surfaceLevel(r,c+1,this.surfaceLevel[r][c+1]);
+         surfaceLevel n5 = new surfaceLevel(r+1,c+1,this.surfaceLevel[r+1][c+1]);
+         surfaceLevel n6 = new surfaceLevel(r+1,c,this.surfaceLevel[r+1][c]);
+         surfaceLevel n7 = new surfaceLevel(r+1,c-1,this.surfaceLevel[r+1][c-1]);
+         surfaceLevel n8 = new surfaceLevel(r,c-1,this.surfaceLevel[r][c-1]);
+         
+         surfaceLevel[] levels = {n1,n2,n3,n4,n5,n6,n7,n8};
+         for (int a = 1;a<8;a++){
             float hh = (float)0.01;
-            float diff = list[a] - surfaceLevel[x][y] + hh;
-            if (diff < lowest){
+            float diff = levels[a].level - surfaceLevel[x][y] + hh;
+            if (diff < levels[lowest].level - surfaceLevel[x][y]){
                lowest = a;
                }
             }
-         
+         waterFlowTo(x,y,levels[lowest].x,levels[lowest].y);
+         }
+   }
+   //method takes a unit of water and makes it flow to the next cell
+   public void waterFlowTo(int x1,int y1,int x2, int y2){
+      this.depth[x1][y1] = this.depth[x1][y1] - terrainWater.WATER_UNIT;
+      this.depth[x2][y2] = this.depth[x2][y2] + terrainWater.WATER_UNIT;
+      Color col = new Color(0, 0, 153);
+      //Color col2 = new Color(255,0,102);
+	   this.img.setRGB(x2, y2, col.getRGB());
+      if(this.depth[x1][x2] == 0.00){
+         this.img.setRGB(x1,y1,0);
+         }
+      }
+      
    public void addWater(int x, int y){
       for (int a = (x-3);a<(x+3);a++){
          for(int b = (y-3);b<(y+3);b++){

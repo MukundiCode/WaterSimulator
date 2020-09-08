@@ -41,10 +41,6 @@ public class Flow {
 	    
 		// to do: add a MouseListener, buttons and ActionListeners on those buttons
       fp.addMouseListener(new CustomMouseListener(fp));//{ 
-   /*   public void mouseClicked(MouseEvent e){
-         System.out.println("Mouse clicked");
-         }
-        }); */
 	   	
 		JPanel b = new JPanel();
 	    b.setLayout(new BoxLayout(b, BoxLayout.LINE_AXIS));
@@ -54,12 +50,30 @@ public class Flow {
 			public void actionPerformed(ActionEvent e){
 				// to do ask threads to stop
 				frame.dispose();
+            System.exit(0);
 			}
 		});
       
       JButton resetB = new JButton("Reset");
+      resetB.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            fp.clear();
+            fp.stop();
+            fp.repaint();
+            }
+         });
       JButton pauseB = new JButton("Pause");
+      pauseB.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            fp.stop();
+            }
+         });
       JButton playB = new JButton("Play");
+      playB.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            fp.play();
+            }
+        });
 		//adding the buttons to the item
       
       b.add(resetB);
@@ -93,6 +107,7 @@ public class Flow {
 		// 
 		landdata.readData(args[0]);
       water.makeImage(landdata.getDimX(),landdata.getDimY());
+      water.makeSurface(landdata);
 		
 		frameX = landdata.getDimX();
 		frameY = landdata.getDimY();
