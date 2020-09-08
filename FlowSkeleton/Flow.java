@@ -122,7 +122,6 @@ class CustomMouseListener implements MouseListener {
          this.f = f;
          }
       public void mouseClicked(MouseEvent e) {
-         System.out.println("Mouse Clicked: ("+e.getX()+", "+e.getY() +")");
          f.water.addWater(e.getX(),e.getY());
          this.f.addWater();
          

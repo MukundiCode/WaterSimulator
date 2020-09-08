@@ -31,12 +31,15 @@ public class FlowPanel extends JPanel implements Runnable {
 	public void addWater(){
       repaint();
       }
+      
    public void stop(){
       this.play.set(false); 
       }
+      
    public void play(){
       this.play.set(true);
       }
+      
    public void clear(){
       for (int x = 3;x<land.dimx-2;x++){
          for (int y = 3;y<land.dimy-2;y++){
@@ -50,11 +53,19 @@ public class FlowPanel extends JPanel implements Runnable {
 		// display loop here
 		// to do: this should be controlled by the GUI
 		// to allow stopping and starting
+      //generating the permuted list
+      land.genPermute();
       boolean run = true;
-      //this.play.set(true);
-      System.out.println(this.play.get());
       while(run == true){
          if(this.play.get() == true){
+         for(int i = 0; i<land.dimx*land.dimy ; i++){
+            int[] locations = new int[2];
+            land.getPermute(land.permute.get(i), locations);
+            this.water.flow(locations[0],locations[1]);
+            }
+            repaint();
+            }
+         /*
             for (int x = 1;x<land.dimx-1;x++){
                for (int y = 1;y<land.dimy-1;y++){
                   this.water.flow(x,y);
@@ -62,6 +73,7 @@ public class FlowPanel extends JPanel implements Runnable {
                } 
 	          repaint();
            }
+           */
          else{
             try {
                Thread.sleep(1000);
