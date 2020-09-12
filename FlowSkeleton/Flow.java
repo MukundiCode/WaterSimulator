@@ -25,7 +25,7 @@ public class Flow {
 		return (System.currentTimeMillis() - startTime) / 1000.0f; 
 	}
 	
-	public static void setupGUI(int frameX,int frameY,Terrain landdata,terrainWater water) {
+	public static void setupGUI(int frameX,int frameY,Terrain landdata,terrainWater water)throws InterruptedException {
 		
 		Dimension fsize = new Dimension(800, 800);
     	JFrame frame = new JFrame("Waterflow"); 
@@ -87,12 +87,21 @@ public class Flow {
       	frame.add(g); //add contents to window
         frame.setContentPane(g);
         frame.setVisible(true);
-        Thread fpt = new Thread(fp);
-        fpt.start();
+        //Thread fpt = new Thread(fp);
+        //fpt.start();
+        int numOfThreads = 4;
+        flowThread [] threads = new flowThread[numOfThreads];
+        for(int i =0;i<numOfThreads;i++){
+            threads[i] = new flowThread((i*(fp.land.dimx*fp.land.dimy))/numOfThreads,((i+1)*(fp.land.dimx*fp.land.dimy))/numOfThreads,fp);
+            threads[i].start();
+            }
+        for(int x=0;x<numOfThreads;x++){
+            threads[x].join();
+            }
 	}
 	
 		
-	public static void main(String[] args) {
+	public static void main(String[] args)throws InterruptedException {
 		Terrain landdata = new Terrain();
       terrainWater water = new terrainWater();
       
@@ -111,7 +120,8 @@ public class Flow {
 		
 		frameX = landdata.getDimX();
 		frameY = landdata.getDimY();
-		SwingUtilities.invokeLater(()->setupGUI(frameX, frameY, landdata, water));
+		//SwingUtilities.invokeLater(()->setupGUI(frameX, frameY, landdata, water));
+      setupGUI(frameX, frameY, landdata, water);
 		
 		// to do: initialise and start simulation
 	}

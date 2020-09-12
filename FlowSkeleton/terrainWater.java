@@ -63,7 +63,7 @@ public class terrainWater{
       float[] list = {surfaceLevel[r-1][c-1], surfaceLevel[r-1][c], surfaceLevel[r-1][c+1], surfaceLevel[r][c+1], surfaceLevel[r+1][c+1], surfaceLevel[r+1][c], surfaceLevel[r+1][c-1], surfaceLevel[r][c-1]};
       //checking if this grid is a minima
       for (int i=0; i<8 ;i++){
-         if (list[i] < surfaceLevel[r][c] + 0.01){
+         if (list[i] <= surfaceLevel[r][c] + 0.01){
             minima = false;
             break;
             }
@@ -75,7 +75,7 @@ public class terrainWater{
          }
       return minima;
       }
-   public void flow(int x, int y){
+   public synchronized void flow(int x, int y){
       if (x!=0 && y!=0 && x!=this.dimx-1 && y!= this.dimy-1 && isMinima(x,y) != true && this.depth[x][y] != 0){
          int r = x;
          int c = y;
@@ -103,9 +103,11 @@ public class terrainWater{
          }
    }
    //method takes a unit of water and makes it flow to the next cell
-   public void waterFlowTo(int x1,int y1,int x2, int y2){
+   public synchronized void waterFlowTo(int x1,int y1,int x2, int y2){
       this.depth[x1][y1] = this.depth[x1][y1] - terrainWater.WATER_UNIT;
+      this.surfaceLevel[x1][y1] = this.surfaceLevel[x1][y1] - terrainWater.WATER_UNIT;
       this.depth[x2][y2] = this.depth[x2][y2] + terrainWater.WATER_UNIT;
+      this.surfaceLevel[x2][y2] = this.surfaceLevel[x2][y2] + terrainWater.WATER_UNIT;
       Color col = new Color(0, 0, 153);
       //Color col2 = new Color(255,0,102);
 	   this.img.setRGB(x2, y2, col.getRGB());
@@ -113,7 +115,7 @@ public class terrainWater{
          this.img.setRGB(x1,y1,0);
          }
       }
-      
+     
    public void addWater(int x, int y){
       for (int a = (x-3);a<(x+3);a++){
          for(int b = (y-3);b<(y+3);b++){
