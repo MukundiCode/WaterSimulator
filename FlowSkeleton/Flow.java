@@ -91,8 +91,9 @@ public class Flow {
       	frame.add(g); //add contents to window
         frame.setContentPane(g);
         frame.setVisible(true);
-        //Thread fpt = new Thread(fp);
-        //fpt.start();
+        Thread fpt = new Thread(fp);
+        fpt.start();
+        /*
         int numOfThreads = 4;
         flowThread [] threads = new flowThread[numOfThreads];
         for(int i =0;i<numOfThreads;i++){
@@ -100,9 +101,8 @@ public class Flow {
             threads[i].start();
             }
         for(int x=0;x<numOfThreads;x++){
-            System.out.println("Tasika");
             threads[x].join();
-            }
+            }*/
 	}
 	
 		

@@ -3,7 +3,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-public class FlowPanel extends JPanel {//implements Runnable {
+public class FlowPanel extends JPanel implements Runnable {
 	Terrain land;
    terrainWater water;
    AtomicBoolean play;
@@ -47,32 +47,38 @@ public class FlowPanel extends JPanel {//implements Runnable {
             this.water.depth[x][y] = (float)0.00;
             this.water.img.setRGB(x,y,0);
             }
-         } 
+         }
+      Flow.time = 0; 
+      Flow.timer.setText(Integer.toString(Flow.time));
     } 
-   /*
+   
 	public void run() {	
-		// display loop here
-		// to do: this should be controlled by the GUI
-		// to allow stopping and starting
-      //generating the permuted list
-      land.genPermute();
       boolean run = true;
+      int numOfThreads = 4;
+      flowThread [] threads = new flowThread[numOfThreads];
       while(run == true){
          if(this.play.get() == true){
-         for(int i = 0; i<land.dimx*land.dimy ; i++){
-            int[] locations = new int[2];
-            land.getPermute(land.permute.get(i), locations);
-            this.water.flow(locations[0],locations[1]);
+            for(int i =0;i<numOfThreads;i++){
+               threads[i] = new flowThread((i*(this.land.dimx*this.land.dimy))/numOfThreads,((i+1)*(this.land.dimx*this.land.dimy))/numOfThreads,this.water,this.land);
+               threads[i].start();
+               }
+            for(int x=0;x<numOfThreads;x++){
+               try{
+               threads[x].join();
+               repaint();
+               Flow.timer.setText(Integer.toString(Flow.time++));
+               }catch(InterruptedException e){
+               
+               }
+               }
             }
-            repaint();
+            else{
+               try {
+                  Thread.sleep(1000);
+             } catch (InterruptedException ex) {
+                   // Stop immediately and go home
+               }
             }
-         else{
-            try {
-               Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                 // Stop immediately and go home
-            }
-         }
        }
-	}  */
+	}  
 }
