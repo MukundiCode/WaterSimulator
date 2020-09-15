@@ -75,7 +75,13 @@ public class terrainWater{
          }
       return minima;
       }
-   public synchronized void flow(int x, int y){
+   public void flow(int x, int y){
+      if(x==0 || x==dimx-1){
+         this.depth[x][y] = (float)0.00;
+         }
+      if(y==0 || y==dimy-1){
+         this.depth[x][y] = (float)0.00;
+         }
       if (x!=0 && y!=0 && x!=this.dimx-1 && y!= this.dimy-1 && isMinima(x,y) != true && this.depth[x][y] != 0){
          int r = x;
          int c = y;

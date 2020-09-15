@@ -21,6 +21,7 @@ public class flowThread extends java.lang.Thread{
             this.fp.water.flow(locations[0],locations[1]);
             }
             fp.repaint();
+            Flow.timer.setText(Integer.toString(Flow.time++));
             }
          else{
             try {

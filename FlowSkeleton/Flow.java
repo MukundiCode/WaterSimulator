@@ -14,6 +14,8 @@ public class Flow {
 	static int frameX;
 	static int frameY;
 	static FlowPanel fp;
+   static JTextPane timer;
+   static int time = 0;
 
 	// start timer
 	private static void tick(){
@@ -53,7 +55,7 @@ public class Flow {
             System.exit(0);
 			}
 		});
-      
+      Flow.timer = new JTextPane();
       JButton resetB = new JButton("Reset");
       resetB.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
@@ -80,7 +82,9 @@ public class Flow {
       b.add(pauseB);
       b.add(playB);
 		b.add(endB);
+      b.add(timer);
 		g.add(b);
+      
     	
 		frame.setSize(frameX, frameY+50);	// a little extra space at the bottom for buttons
       	frame.setLocationRelativeTo(null);  // center window on screen
@@ -96,6 +100,7 @@ public class Flow {
             threads[i].start();
             }
         for(int x=0;x<numOfThreads;x++){
+            System.out.println("Tasika");
             threads[x].join();
             }
 	}
