@@ -15,7 +15,8 @@ public class terrainWater{
 	int dimx, dimy; // data dimensions
 	public static BufferedImage img; // greyscale image for displaying the terrain top-down
    public static float WATER_UNIT = (float)0.01;
-   // overall number of elements in the height grid
+   public static float WaterIn = (float)0.00;
+   public static float WaterOut = (float)0.00;
 	int dim(){
 		return dimx*dimy;
 	}
@@ -29,6 +30,15 @@ public class terrainWater{
 	int getDimY(){
 		return dimy;
 	}
+   float getCurrentWater(){
+      float w = (float)0.00;
+      for(int i=0;i<dimx-1;i++){
+         for(int j=0;j<dimy-1;j++){
+            w = w+depth[i][j];
+            }
+         }
+      return w;
+      }
    void makeImage(int x, int y){
       this.dimy = y;
       this.dimx = x;  
@@ -77,9 +87,11 @@ public class terrainWater{
       }
    public void flow(int x, int y){
       if(x==0 || x==dimx-1){
+         terrainWater.WaterOut = terrainWater.WaterOut + this.depth[x][y];
          this.depth[x][y] = (float)0.00;
          }
       if(y==0 || y==dimy-1){
+         terrainWater.WaterOut = terrainWater.WaterOut + this.depth[x][y];
          this.depth[x][y] = (float)0.00;
          }
       if (x!=0 && y!=0 && x!=this.dimx-1 && y!= this.dimy-1 && isMinima(x,y) != true && this.depth[x][y] != 0){
@@ -110,16 +122,17 @@ public class terrainWater{
    }
    //method takes a unit of water and makes it flow to the next cell
    public synchronized void waterFlowTo(int x1,int y1,int x2, int y2){
+      if(this.depth[x1][y1] > 0){
       this.depth[x1][y1] = this.depth[x1][y1] - terrainWater.WATER_UNIT;
       this.surfaceLevel[x1][y1] = this.surfaceLevel[x1][y1] - terrainWater.WATER_UNIT;
       this.depth[x2][y2] = this.depth[x2][y2] + terrainWater.WATER_UNIT;
       this.surfaceLevel[x2][y2] = this.surfaceLevel[x2][y2] + terrainWater.WATER_UNIT;
       Color col = new Color(0, 0, 153);
-      //Color col2 = new Color(255,0,102);
 	   this.img.setRGB(x2, y2, col.getRGB());
-      if(this.depth[x1][x2] == 0.00){
+      if(this.depth[x1][y1] == 0.00){
          this.img.setRGB(x1,y1,0);
          }
+      }
       }
      
    public void addWater(int x, int y){
@@ -127,7 +140,8 @@ public class terrainWater{
          for(int b = (y-3);b<(y+3);b++){
             Color col = new Color(0, 0, 153);
 	         this.img.setRGB(a, b, col.getRGB());
-            this.depth[a][b] = 3*terrainWater.WATER_UNIT;
+            this.depth[a][b] = this.depth[a][b]+3*terrainWater.WATER_UNIT;
+            terrainWater.WaterIn = terrainWater.WaterIn+3*terrainWater.WATER_UNIT;
          }
       }
    }

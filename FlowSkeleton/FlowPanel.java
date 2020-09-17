@@ -35,6 +35,12 @@ public class FlowPanel extends JPanel implements Runnable {
       
    public void stop(){
       this.play.set(false); 
+      System.out.println("Water in was: "+terrainWater.WaterIn);
+      System.out.println("Water out was: "+terrainWater.WaterOut);
+      System.out.println("Water remaining is :"+water.getCurrentWater());
+      System.out.println("Total Water after sim is : "+(terrainWater.WaterOut + water.getCurrentWater()));
+      System.out.println("Total difference is : "+(terrainWater.WaterIn - (terrainWater.WaterOut + water.getCurrentWater())));
+      
       }
       
    public void play(){
